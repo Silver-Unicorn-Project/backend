@@ -1,0 +1,49 @@
+able User {
+  id int [pk, increment]
+  username char
+  first_name char
+  last_name char
+  email email
+  phon_number phon_number
+  password char
+}
+Table Product {
+  id int [pk, increment]
+  name varchar
+  description text
+  subcategory int [ref: > Subcategory.id]
+  foto image
+  cost int
+  aviability bool
+  brand varchar
+}
+Table Subcategory {
+  id int [pk, increment]
+  name varchar
+  category int [ref: > Category.id]
+}
+Table Category {
+  id int [pk, increment]
+  name varchar
+}
+Table FavoriteProduct {
+  id int [pk, increment]
+  user_id int [ref: > User.id]
+  product_id int [ref: > Product.id]
+}
+Table ShopList{
+  id int [pk, increment]
+  user_id int [ref: > User.id]
+  product_id int [ref: <> Product.id]
+  first_name varchar
+  last_name varchar
+  email email
+  phon_number phon_number
+  delivery int [ref: > Delivery.id]
+  comment text
+}
+Table Delivery {
+  id int [pk, increment]
+  type_delivery varchar
+  address varchar
+}
