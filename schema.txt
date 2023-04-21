@@ -4,7 +4,7 @@ able User {
   first_name char
   last_name char
   email email
-  phon_number phon_number
+  phone_number phone_number
   password char
 }
 Table Product {
