@@ -1,6 +1,5 @@
-able User {
+Table User {
   id int [pk, increment]
-  username char
   first_name char
   last_name char
   email email
@@ -12,9 +11,9 @@ Table Product {
   name varchar
   description text
   subcategory int [ref: > Subcategory.id]
-  foto image
+  foto list [ref: <> Pictures.id]
   cost int
-  aviability bool
+  aviability int [ref: - Storage.id]
   brand varchar
 }
 Table Subcategory {
@@ -46,4 +45,8 @@ Table Delivery {
   id int [pk, increment]
   type_delivery varchar
   address varchar
+}
+Table Pictures {
+  id int [pk, increment]
+  foto image 
 }
