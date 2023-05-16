@@ -14,7 +14,7 @@ Table Product {
   foto list [ref: <> Pictures.id]
   cost int
   aviability int [ref: - Storage.id]
-  brand int [ref: > Brand.id]
+  brand varchar
 }
 Table Subcategory {
   id int [pk, increment]
@@ -45,16 +45,6 @@ Table Delivery {
   id int [pk, increment]
   type_delivery varchar
   address varchar
-}
-Table Brand {
-  id int [pk, increment]
-  name varchar
-  country varchar
-  descript_company varchar
-}
-Table Storage {
-  id int [pk, increment]
-  store_aviability int
 }
 Table Pictures {
   id int [pk, increment]
