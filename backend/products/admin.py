@@ -1,14 +1,23 @@
 from django.contrib import admin
 from .models import *
 
-admin.site.register(Products)
-admin.site.register(Status)
-admin.site.register(Orders)
+
+class ProductsPictureAdmin(admin.StackedInline):
+    model = ProductsPicture
+    list_display = ('products', )
 
 
-class ProductAdmin(admin.ModelAdmin):
-    list_display = ('name', 'quantity', 'size', 'picture', 'price')
+@admin.register(Products)
+class ProductsAdmin(admin.ModelAdmin):
+    inlines = [ProductsPictureAdmin]
+    list_display = ('name', 'description', 'price', 'quantity', 'is_published', 'created_at')
     list_display_links = ('name',)
-    search_fields = ('name',)
     list_editable = ('is_published',)
 
+    class Meta:
+        model = Products
+
+
+@admin.register(ProductsPicture)
+class ProductsPictureAdmin(admin.ModelAdmin):
+    pass

@@ -3,14 +3,14 @@ from django.urls import reverse
 
 
 class Products(models.Model):
-    name = models.CharField(max_length=255, verbose_name='Наименование товара')
-    price = models.CharField(max_length=255, verbose_name='Цена')
+    name = models.CharField(max_length=255, unique=True, verbose_name='Наименование товара')
+    price = models.PositiveIntegerField(verbose_name='Цена')
     size = models.CharField(max_length=255, verbose_name='Размер', blank=True)
-    picture = models.ImageField(upload_to='picture/%Y/%m/%d/', verbose_name='Фото')
-    description = models.TextField(blank=True, verbose_name='Описание товара')
-    quantity = models.IntegerField(verbose_name='Количество в наличии')
+    picture = models.FileField(blank=True, verbose_name='Изображениe товаров')
+    description = models.TextField(max_length=1000, verbose_name='Описание товара')
+    quantity = models.PositiveIntegerField(verbose_name='Количество в наличии')
     is_published = models.BooleanField(default=True, verbose_name='Публикация')
-    created_at = models.DateTimeField(auto_now_add=True)
+    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
 
     def __str__(self):
         return self.name
@@ -23,6 +23,17 @@ class Products(models.Model):
         verbose_name_plural = 'Товары'
         ordering = ('name', 'price')
 
+
+class ProductsPicture(models.Model):
+    products = models.ForeignKey(Products, default=None, on_delete=models.CASCADE)
+    pictures = models.FileField(upload_to='picture/')
+
+    def __str__(self):
+        return self.products.name
+
+    class Meta:
+        verbose_name='Изображения товаров'
+        verbose_name_plural = 'Изображения товаров'
 
 class Status(models.Model):
     status_name = models.CharField(max_length=255, verbose_name='Название статуса')
@@ -47,4 +58,3 @@ class Orders(models.Model):
     class Meta:
         verbose_name = 'Заказ'
         verbose_name_plural = 'Заказы'
-
