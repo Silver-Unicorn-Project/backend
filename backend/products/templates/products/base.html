@@ -1,0 +1,33 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <title>Silver Unicorn</title>
+    <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" crossorigin="anonymous">
+</head>
+<body>
+<h1>Привет, это интернет магазин Серебряный единорог!</h1>
+{% block container %}
+<div class="center">
+<div class="row mt-5" data-test="cards">
+{% for card in cards %}
+    <div class="col-4" data-test="card">
+        <div class="card mb-3" >
+                {% if card.picture %}
+                <img src='{{ card.picture.url }}' class="card-img-top img-fluid" data-test="picture"/>
+                {% endif %}
+                <div class="card-body">
+                <h5 class="card-title">{{ card.name }}</h5>
+                <p class="card-text">{{ card.description }}</p>
+                <a href="{{ card.get_absolute_url }}" class="btn btn-sm btn-primary" data-test="tourlink">Подробнее</a>
+            </div>
+        </div>
+    </div>
+{% endfor %}
+</div>
+</div>
+</body>
+</html>
+</body>
+</html>
+{% endblock %}

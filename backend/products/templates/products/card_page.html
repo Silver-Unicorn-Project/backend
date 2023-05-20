@@ -1,0 +1,21 @@
+{% extends 'products/base.html' %}
+
+{% block container %}
+<body>
+
+    <h1 class="display-3 mt-4" data-test="title">{{ card.name }}</h1>
+
+    <!-- HERO -->
+
+    <p class="lead" data-test="lead"><span data-test="country">
+        В наличии {{ card.quantity }} ед. Стоимость {{ card.price }} рублей за единицу.
+    </p>
+    {% if card.picture %}
+        <img data-test="picture" src="{{ card.picture.url }}" class="w-75" alt="">
+    {% endif %}
+    <p class="my-4 w-75" data-test="description">{{ card.description }}</p>
+
+    <a href="{% url 'buy_page' %}" class="btn btn-success btn-lg" data-test="buybutton"> Купить  </a>
+
+</body>
+{% endblock %}
