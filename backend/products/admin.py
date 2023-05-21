@@ -17,9 +17,15 @@ class CategoryAdmin(admin.ModelAdmin):
 @admin.register(Products)
 class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductsPictureAdmin]
-    list_display = ('name', 'description', 'cat', 'price', 'quantity', 'is_published', 'created_at')
+    list_display = ('name', 'cat', 'price', 'quantity', 'is_published', 'created_at', 'get_html_picture')
     list_display_links = ('name',)
     list_editable = ('is_published',)
+
+    def get_html_picture(self, objects):
+        if objects.picture:
+            return mark_safe(f"<img src='{objects.picture.url}' width=100")
+
+    get_html_picture.short_description = 'Миниатюра'
 
     class Meta:
         model = Products
