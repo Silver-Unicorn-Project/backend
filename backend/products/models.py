@@ -71,8 +71,8 @@ class Order(models.Model):
         region='RU',
         db_index=True,
     )
-    firstname = models.CharField('Имя', max_length=1000)
-    lastname = models.CharField('Фамилия', max_length=1000)
+    firstname = models.CharField('Имя', max_length=100)
+    lastname = models.CharField('Фамилия', max_length=100)
     created_at = models.DateTimeField('Когда создан', auto_now=True)
 
     objects = OrderQuerySet.as_manager()
