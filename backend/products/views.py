@@ -1,5 +1,6 @@
 from django.shortcuts import render, get_object_or_404
-from .models import *
+
+from .models import Products, ProductsPicture
 
 
 def main_view(request):

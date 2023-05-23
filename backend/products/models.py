@@ -3,10 +3,8 @@ from django.db.models import F, Sum
 from django.contrib.auth.models import User
 from django.core.validators import MinValueValidator
 from django.urls import reverse
-from django.utils.safestring import mark_safe
 
 from phonenumber_field.modelfields import PhoneNumberField
-
 
 
 class Products(models.Model):
@@ -19,7 +17,6 @@ class Products(models.Model):
     is_published = models.BooleanField(default=True, verbose_name='Публикация')
     created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
     cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категории')
-
 
     def __str__(self):
         return self.name

@@ -1,7 +1,10 @@
 from django.contrib import admin
+from django.utils.html import format_html
 
 from .models import (
+    Category,
     Products,
+    ProductsPicture,
     Status,
     Order,
     OrderItem,
@@ -27,7 +30,7 @@ class ProductsAdmin(admin.ModelAdmin):
     inlines = [ProductsPictureAdmin]
     list_display = ('name', 'cat', 'price', 'quantity', 'is_published', 'created_at', 'get_html_picture')
 
-    
+
 @admin.register(Products)
 class ProductAdmin(admin.ModelAdmin):
     list_display = (
@@ -43,7 +46,7 @@ class ProductAdmin(admin.ModelAdmin):
 
     def get_html_picture(self, objects):
         if objects.picture:
-            return mark_safe(f"<img src='{objects.picture.url}' width=100")
+            return format_html(f"<img src='{objects.picture.url}' height='200px' />")
 
     get_html_picture.short_description = 'Миниатюра'
 
