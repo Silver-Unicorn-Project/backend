@@ -25,10 +25,10 @@ class CategoryAdmin(admin.ModelAdmin):
     search_fields = ('title',)
 
 
-@admin.register(Products)
-class ProductsAdmin(admin.ModelAdmin):
-    inlines = [ProductsPictureAdmin]
-    list_display = ('name', 'cat', 'price', 'quantity', 'is_published', 'created_at', 'get_html_picture')
+# @admin.register(Products)
+# class ProductsAdmin(admin.ModelAdmin):
+#     inlines = [ProductsPictureAdmin]
+#     list_display = ('name', 'cat', 'price', 'quantity', 'is_published', 'created_at', 'get_html_picture')
 
 
 @admin.register(Products)
