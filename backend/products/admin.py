@@ -54,9 +54,9 @@ class ProductAdmin(admin.ModelAdmin):
         model = Products
 
 
-@admin.register(ProductsPicture)
-class ProductsPictureAdmin(admin.ModelAdmin):
-    pass
+# @admin.register(ProductsPicture)
+# class ProductsPictureAdmin(admin.ModelAdmin):
+#     pass
 
 
 @admin.register(Status)
