@@ -73,11 +73,6 @@ components:
         phone:
           type: string
           example: '12345'
-        userStatus:
-          type: integer
-          description: User Status
-          format: int32
-          example: 1
     Order:
       type: object
       properties:
