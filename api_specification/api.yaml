@@ -1,0 +1,397 @@
+openapi: 3.0.0
+info:
+  title: SilverUnicon
+  version: 0.0.1
+servers:
+  - url: http://localhost:8000/api/v1
+    description: Dev
+paths:
+  /articles/:
+    get:
+      summary: Метод получения списка статей
+      tags:
+        - "Article"
+      operationId: getArtiles
+      responses:
+        '200':
+          description: Успешный ответ со списком статей
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Articles"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /articles/{articleSlug}/:
+    get:
+      summary: Метод получения статьи
+      tags:
+        - "Article"
+      operationId: getArticle
+      parameters:
+        - name: article_slug
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        '200':
+          description: Успешный ответ со статьёй
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Article"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /categories/:
+    get:
+      summary: Метод получения списка категорий
+      tags:
+        - "Categories"
+      operationId: getAllCategories
+      responses:
+        '200':
+          description: Успешный ответ со списком категорий
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Categories"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /categories/{categoryId}/:
+    get:
+      summary: Метод получения списка товаров категории
+      tags:
+        - "Categories"
+      operationId: getAllCategoryithProducts
+      parameters:
+        - name: catrgory_id
+          in: path
+          required: true
+          description: Идентификатор подгруппы
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Успешный ответ со списком товаров категории
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Products"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/:
+    post:
+      summary: Метод добавления пользователя
+      tags:
+        - "User"
+      operationId: createUser
+      requestBody:
+        required: true
+        content:
+          application/json:
+            schema:
+              $ref: "models.yaml#/components/schemas/User"
+      responses:
+        '200':
+          description: Успешный ответ с информацией о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/User"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/{userName}/:
+    get:
+      summary: Метод получения информации о пользователе
+      tags:
+        - "User"
+      operationId: getUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+      responses:
+        '200':
+          description: Успешный ответ с информацией о пользователе
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/User"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+    delete:
+      tags:
+        - "User"
+      summary: Метод удаления пользователя
+      operationId: deleteUser
+      parameters:
+        - name: username
+          in: path
+          required: true
+          schema:
+            type: string
+      responses:
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/{userName}/create-favorite-list/:
+    post:
+      summary: Метод добавления списка избранных товаров
+      tags:
+        - "User"
+      operationId: createFavoriteListProducts
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'models.yaml#/components/schemas/Product'
+      responses:
+        '200':
+          description: Успешный ответ со списком избранных товаров
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Products"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/{userName}/update-favorite-list/:
+    put:
+      summary: Метод обновления списка избранных товаров
+      tags:
+        - "User"
+      operationId: putProductFavoriteList
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'models.yaml#/components/schemas/Product'
+      responses:
+        '200':
+          description: Успешный ответ об обновления списка избранных товаров
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Товар добавлени в список ибранного
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/{userName}/orders/:
+    get:
+      summary: Метод получения всех заказов пользователя
+      tags:
+        - "User"
+      operationId: getUserOrders
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+      responses:
+        '200':
+          description: Успешный ответ со списком заказов
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Order-List"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+    post:
+      summary: Метод добавления заказа
+      tags:
+        - "User"
+      operationId: createOrder
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'models.yaml#/components/schemas/Product'
+      responses:
+        '200':
+          description: Успешный ответ со списком товаров в заказе
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Products"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+  /user/{userName}/orders/{orderId}/:
+    get:
+      summary: Метод получения списка товаров в заказе
+      tags:
+        - "User"
+      operationId: getOrderProducts
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+        - name: order_id
+          in: path
+          required: true
+          description: Идентификатор заказа
+          schema:
+            type: integer
+            example: 1
+      responses:
+        '200':
+          description: Успешный ответ со списком товаров в заказе
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Products"
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+    put:
+      summary: Метод обновления списка товаров в заказе
+      tags:
+        - "User"
+      operationId: putProductFavoriteList
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+        - name: order_id
+          in: path
+          required: true
+          description: Идентификатор заказа
+          schema:
+            type: integer
+            example: 1
+      requestBody:
+        content:
+          application/json:
+            schema:
+              type: array
+              items:
+                $ref: 'models.yaml#/components/schemas/Product'
+      responses:
+        '200':
+          description: Успешный ответ
+          content:
+            text/plain:
+              schema:
+                type: string
+                example: Список товаров заказа обновлен
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
+    delete:
+      tags:
+        - "User"
+      summary: Метод удаления заказа
+      operationId: deleteOrder
+      parameters:
+        - name: username
+          in: path
+          required: true
+          description: Имя пользователя
+          schema:
+            type: string
+            example: username
+        - name: order_id
+          in: path
+          required: true
+          schema:
+            type: integer
+      responses:
+        'default':
+          description: Ошибки
+          content:
+            application/json:
+              schema:
+                $ref: "models.yaml#/components/schemas/Error"
