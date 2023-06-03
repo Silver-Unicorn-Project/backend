@@ -176,3 +176,33 @@ class FavoriteItem(models.Model):
 
     def __str__(self):
         return f'{self.product.name}'
+
+
+class ProductReview(models.Model):
+    """Отзывы пользователей"""
+
+    product = models.ForeignKey(
+        Products,
+        on_delete=models.CASCADE,
+        related_name='productreviews',
+        verbose_name='Отзывы',
+        help_text='Оставьте свой отзыв',
+    )
+    author = models.ForeignKey(
+        User,
+        on_delete=models.CASCADE,
+        verbose_name='Автор',
+        related_name='productreviews',
+        help_text='Автор'
+    )
+    text = models.TextField(
+        verbose_name='Текст отзыва',
+        help_text='Введите свой отзыв'
+    )
+    created = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата отзыва'
+    )
+
+    def __str__(self):
+        return self.text

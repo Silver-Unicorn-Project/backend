@@ -10,6 +10,7 @@ from .models import (
     OrderItem,
     Favorite,
     FavoriteItem,
+    ProductReview
 )
 
 
@@ -91,3 +92,21 @@ class FavoriteAdmin(admin.ModelAdmin):
     inlines = (
         FavoriteItemInline,
     )
+
+
+@admin.register(ProductReview)
+class ProductReviewAdmin(admin.ModelAdmin):
+    """
+    Интерфейс отзывов на странице сайта.
+    """
+
+    list_display = (
+        'pk',
+        'product',
+        'author',
+        'text',
+        'created',
+    )
+    search_fields = ('text',)
+    list_filter = ('product',)
+    empty_value_display = '-пусто-'
