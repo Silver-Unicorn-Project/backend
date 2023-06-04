@@ -76,7 +76,7 @@ paths:
         - "Categories"
       operationId: getAllCategoryithProducts
       parameters:
-        - name: catrgory_id
+        - name: category_id
           in: path
           required: true
           description: Идентификатор подгруппы

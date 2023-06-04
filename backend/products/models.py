@@ -204,5 +204,38 @@ class ProductReview(models.Model):
         verbose_name='Дата отзыва'
     )
 
+    class Meta:
+        verbose_name = 'Отзыв'
+        verbose_name_plural = 'Отзывы'
+
     def __str__(self):
         return self.text
+
+
+class Articles(models.Model):
+    title = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name='Наименование акции'
+    )
+    text = models.TextField(
+        max_length=1000,
+        verbose_name='Описание акции'
+    )
+    created_at = models.DateTimeField(
+        auto_now_add=True,
+        verbose_name='Дата создания акции'
+    )
+    slug = models.SlugField(
+        verbose_name='Слаг',
+        max_length=200,
+        unique=True,
+        help_text='Введите слаг'
+    )
+
+    class Meta:
+        verbose_name = 'Акция'
+        verbose_name_plural = 'Акции'
+
+    def __str__(self):
+        return self.name

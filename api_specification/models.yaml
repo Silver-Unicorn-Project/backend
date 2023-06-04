@@ -1,6 +1,6 @@
 components:
   schemas:
-    Catrgory:
+    Category:
       type: array
       required:
         - category_id
@@ -19,7 +19,7 @@ components:
     Categories:
       type: array
       items:
-        $ref: "#/components/schemas/Catrgory"
+        $ref: "#/components/schemas/Category"
     Product:
       type: object
       required:

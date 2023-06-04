@@ -10,7 +10,8 @@ from .models import (
     OrderItem,
     Favorite,
     FavoriteItem,
-    ProductReview
+    ProductReview,
+    Articles
 )
 
 
@@ -110,3 +111,22 @@ class ProductReviewAdmin(admin.ModelAdmin):
     search_fields = ('text',)
     list_filter = ('product',)
     empty_value_display = '-пусто-'
+
+
+@admin.register(Articles)
+class ArticlesAdmin(admin.ModelAdmin):
+    """
+    Интерфейс акций на странице сайта.
+    """
+
+    list_display = (
+        'pk',
+        'title',
+        'text',
+        'created_at',
+        'slug',
+    )
+    search_fields = ('created_at',)
+    list_filter = ('title',)
+    empty_value_display = '-пусто-'
+    prepopulated_fields = {"slug": ("title",)}
