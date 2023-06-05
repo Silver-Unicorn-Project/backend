@@ -83,7 +83,7 @@ components:
         order_amount:
           type: number
           example: 1000.00
-    Order-List:
+    Orders:
       type: array
       items:
         $ref: "#/components/schemas/Order"
