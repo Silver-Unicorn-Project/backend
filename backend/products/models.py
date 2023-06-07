@@ -37,7 +37,8 @@ class Products(models.Model):
     created_at = models.DateTimeField('Создано', auto_now_add=True)
     category = models.ForeignKey(
         'Category',
-        on_delete=models.PROTECT,
+        on_delete=models.SET_NULL,
+        null=True,
         verbose_name='Категории'
     )
 
