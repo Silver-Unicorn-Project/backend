@@ -8,15 +8,43 @@ from phonenumber_field.modelfields import PhoneNumberField
 
 
 class Products(models.Model):
-    name = models.CharField(max_length=255, unique=True, verbose_name='Наименование товара')
-    price = models.PositiveIntegerField(verbose_name='Цена')
-    size = models.CharField(max_length=255, verbose_name='Размер', blank=True)
-    picture = models.FileField(blank=True, verbose_name='Изображениe товаров')
-    description = models.TextField(max_length=1000, verbose_name='Описание товара')
-    quantity = models.PositiveIntegerField(verbose_name='Количество в наличии')
-    is_published = models.BooleanField(default=True, verbose_name='Публикация')
-    created_at = models.DateTimeField(auto_now_add=True, verbose_name='Создано')
-    cat = models.ForeignKey('Category', on_delete=models.PROTECT, null=True, verbose_name='Категории')
+    name = models.CharField(
+        max_length=255,
+        unique=True,
+        verbose_name='Наименование товара'
+    )
+    price = models.DecimalField(
+        'цена',
+        max_digits=8,
+        decimal_places=2,
+        validators=[MinValueValidator(0)]
+    )
+    size = models.CharField(
+        max_length=255,
+        verbose_name='Размер',
+        blank=True
+    )
+    picture = models.FileField(
+        blank=True,
+        verbose_name='Изображениe товаров'
+    )
+    description = models.TextField('Описание товара')
+    quantity = models.PositiveIntegerField('Количество в наличии')
+    is_published = models.BooleanField(
+        default=False,
+        verbose_name='Публикация'
+    )
+    created_at = models.DateTimeField('Создано', auto_now_add=True)
+    category = models.ForeignKey(
+        'Category',
+        on_delete=models.PROTECT,
+        verbose_name='Категории'
+    )
+
+    class Meta:
+        verbose_name = 'Товары'
+        verbose_name_plural = 'Товары'
+        ordering = ('name', 'price')
 
     def __str__(self):
         return self.name
@@ -24,14 +52,18 @@ class Products(models.Model):
     def get_absolute_url(self):
         return reverse('card', kwargs={'card_id': self.pk})
 
-    class Meta:
-        verbose_name = 'Товары'
-        verbose_name_plural = 'Товары'
-        ordering = ('name', 'price')
-
 
 class Category(models.Model):
-    title = models.CharField(max_length=100, db_index=True, verbose_name='Категории')
+    title = models.CharField(
+        max_length=100,
+        db_index=True,
+        verbose_name='Категории'
+    )
+
+    class Meta:
+        verbose_name = 'Категория'
+        verbose_name_plural = 'Категории'
+        ordering = ('title',)
 
     def __str__(self):
         return self.title
@@ -39,26 +71,34 @@ class Category(models.Model):
     def get_absolute_url(self):
         return reverse('category', kwargs={'cat_id': self.pk})
 
-    class Meta:
-        verbose_name = 'Категория'
-        verbose_name_plural = 'Категории'
-        ordering = ('title',)
 
 
 class ProductsPicture(models.Model):
-    products = models.ForeignKey(Products, default=None, on_delete=models.CASCADE)
-    pictures = models.FileField(upload_to='picture/')
-
-    def __str__(self):
-        return self.products.name
+    products = models.ForeignKey(
+        Products,
+        blank=True,
+        null=True,
+        on_delete=models.CASCADE
+    )
+    image = models.ImageField(
+        'Изображение',
+        blank=True,
+        null=True
+    )
 
     class Meta:
         verbose_name = 'Изображения товаров'
         verbose_name_plural = 'Изображения товаров'
 
+    def __str__(self):
+        return self.products.name
+
 
 class Status(models.Model):
-    status_name = models.CharField(max_length=255, verbose_name='Название статуса')
+    status_name = models.CharField(
+        max_length=255,
+        verbose_name='Название статуса'
+    )
 
     def __str__(self):
         return self.status_name
