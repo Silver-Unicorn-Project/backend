@@ -73,7 +73,6 @@ class Category(models.Model):
         return reverse('category', kwargs={'cat_id': self.pk})
 
 
-
 class ProductsPicture(models.Model):
     products = models.ForeignKey(
         Products,
