@@ -13,6 +13,6 @@
 pip install -r requirements.txt
 ```
 
-Перемменые окружения:
+Переменные окружения:
 
 Файл .envExample переименовать в .env
