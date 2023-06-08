@@ -1,5 +1,4 @@
 from django.shortcuts import render, get_object_or_404
-from rest_framework.generics import UpdateAPIView
 
 from .models import Products, ProductsPicture
 
