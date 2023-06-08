@@ -11,7 +11,7 @@ class CategoriesSerializer(serializers.ModelSerializer):
 
 class CategoryDetailSerializer(serializers.ModelSerializer):
     sub_categories = CategoriesSerializer(read_only=True, many=True)
-    
+
     class Meta:
         model = Category
         fields = ('sub_categories', )
