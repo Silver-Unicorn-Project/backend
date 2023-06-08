@@ -20,11 +20,11 @@ schema_view = get_schema_view(
 )
 urlpatterns = [
     path('admin/', admin.site.urls),
+    path("__debug__/", include("debug_toolbar.urls")),
     path('', main_view, name='home'),
     path('card/<int:card_id>/', show_card, name='card'),
     path('buy_page/', buy_product, name='buy_page'),
     path('api/', include('api.urls')),
-    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0), 
+    re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
        name='schema-redoc'),
-    # path('products/<int:product_id>/review/', )
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)

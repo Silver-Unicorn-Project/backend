@@ -37,6 +37,7 @@ class Products(models.Model):
     created_at = models.DateTimeField('Создано', auto_now_add=True)
     category = models.ForeignKey(
         'Category',
+        related_name='category_products',
         on_delete=models.SET_NULL,
         null=True,
         verbose_name='Категории'
@@ -59,6 +60,15 @@ class Category(models.Model):
         max_length=100,
         db_index=True,
         verbose_name='Категории'
+    )
+    slug = models.SlugField('Слаг', unique=True)
+    category = models.ForeignKey(
+        'self',
+        on_delete=models.CASCADE,
+        verbose_name='Категория',
+        related_name='sub_categories',
+        blank=True,
+        null=True,
     )
 
     class Meta:
