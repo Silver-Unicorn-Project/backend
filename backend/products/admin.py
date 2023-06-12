@@ -35,6 +35,7 @@ class ProductAdmin(admin.ModelAdmin):
         'size',
         'picture',
         'price',
+        'rating',
         'is_published',
     )
     list_display_links = ('name',)
@@ -101,9 +102,10 @@ class ProductReviewAdmin(admin.ModelAdmin):
         'author',
         'text',
         'created',
+        'score',
     )
     search_fields = ('text',)
-    list_filter = ('product',)
+    list_filter = ('product', 'score')
     empty_value_display = '-пусто-'
 
 
