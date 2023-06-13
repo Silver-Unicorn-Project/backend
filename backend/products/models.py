@@ -1,7 +1,7 @@
 from django.db import models
 from django.db.models import F, Sum
 from users.models import User
-from django.core.validators import MinValueValidator
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
 
 from phonenumber_field.modelfields import PhoneNumberField
@@ -41,6 +41,10 @@ class Products(models.Model):
         on_delete=models.SET_NULL,
         null=True,
         verbose_name='Категории'
+    )
+    rating = models.IntegerField(
+        verbose_name='Рейтинг',
+        null=True
     )
 
     class Meta:
@@ -236,14 +240,15 @@ class ProductReview(models.Model):
         on_delete=models.CASCADE,
         related_name='productreviews',
         verbose_name='Отзывы',
-        help_text='Оставьте свой отзыв',
+        help_text='Оставьте свой отзыв'
     )
     author = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
         verbose_name='Автор',
         related_name='productreviews',
-        help_text='Автор'
+        help_text='Автор',
+        null=False
     )
     text = models.TextField(
         verbose_name='Текст отзыва',
@@ -253,13 +258,29 @@ class ProductReview(models.Model):
         auto_now_add=True,
         verbose_name='Дата отзыва'
     )
+    score = models.PositiveIntegerField(
+        verbose_name='Рейтинг',
+        null=False,
+        validators=(
+            MinValueValidator(1, 'Минимум 1',),
+            MaxValueValidator(5, 'Максимум 5',)
+        ),
+    )
 
     class Meta:
         verbose_name = 'Отзыв'
         verbose_name_plural = 'Отзывы'
+        ordering = ['created']
+
+        constraints = (
+            models.UniqueConstraint(
+                fields=('product', 'author',),
+                name='unique_product_author'
+            ),
+        )
 
     def __str__(self):
-        return self.text
+        return self.text[:15]
 
 
 class Articles(models.Model):
@@ -288,4 +309,4 @@ class Articles(models.Model):
         verbose_name_plural = 'Акции'
 
     def __str__(self):
-        return self.name
+        return self.title
