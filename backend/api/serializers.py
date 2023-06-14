@@ -51,7 +51,6 @@ class ProductReviewSerializer(serializers.ModelSerializer):
         return value
 
 
-
 class ArticlesSerializer(serializers.ModelSerializer):
     class Meta:
         model = Articles
