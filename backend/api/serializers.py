@@ -1,6 +1,6 @@
 from rest_framework import serializers
 
-from products.models import Category, Products
+from products.models import Category, Products, Favorite
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
@@ -26,3 +26,31 @@ class ProductSerializer(serializers.ModelSerializer):
             'description',
             'quantity',
         )
+
+
+class FavoriteInfoSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Products
+        fields = (
+            'name',
+            'price',
+            'size',
+            'picture',
+            'description',
+        )
+
+
+class FavoriteSerializer(serializers.ModelSerializer):
+
+    class Meta:
+        model = Favorite
+        fields = (
+            'user',
+            'products',
+            'is_favorited',
+        )
+
+    def to_representation(self, instance):
+        context = {'request': self.context.get('request')}
+        return FavoriteInfoSerializer(instance.products, context=context).data
