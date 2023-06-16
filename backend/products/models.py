@@ -200,6 +200,12 @@ class Favorite(models.Model):
         verbose_name='Пользователь',
         related_name='favorites',
     )
+    products = models.ForeignKey(
+        Products,
+        on_delete=models.CASCADE,
+        verbose_name='Продукты',
+        related_name='favorites'
+    )
 
     class Meta:
         verbose_name = 'Список избранного'
