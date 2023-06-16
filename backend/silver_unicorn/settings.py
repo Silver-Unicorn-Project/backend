@@ -142,29 +142,35 @@ DEFAULT_AUTO_FIELD = 'django.db.models.BigAutoField'
 
 AUTH_USER_MODEL = 'users.User'
 
-REST_FRAMWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
+REST_FRAMEWORK = {
+    'DEFAULT_RENDERER_CLASSES': [
+        'rest_framework.renderers.JSONRenderer',
+        'rest_framework.renderers.BrowsableAPIRenderer',
+    ],
+    'DEFAULT_PERMISSION_CLASSES': [
         'rest_framework.permissions.AllowAny',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
+    ],
+    'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication',
-    ),
-    'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
-    'PAGE_SIZE': 5,
+        'rest_framework.authentication.BasicAuthentication',
+        'rest_framework.authentication.SessionAuthentication',
+    ],
+    # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
+    # 'PAGE_SIZE': 5,
 }
 
-DJOSER = {
-    'LOGIN_FIELD': 'email',
-    'SEND_ACTIVATION_EMAIL': True,
-    'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
-    'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
-    'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
-    'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
-    'ACTIVATION_URL': '#/activate/{uid}/{token}',
-    'PERMISSIONS': {
-        'token_create': ['rest_framework.permissions.AllowAny'],
-    }
-}
+# DJOSER = {
+#     'LOGIN_FIELD': 'email',
+#     'SEND_ACTIVATION_EMAIL': True,
+#     'PASSWORD_CHANGED_EMAIL_CONFIRMATION': True,
+#     'USERNAME_CHANGED_EMAIL_CONFIRMATION': True,
+#     'PASSWORD_RESET_CONFIRM_URL': '#/password/reset/confirm/{uid}/{token}',
+#     'USERNAME_RESET_CONFIRM_URL': '#/username/reset/confirm/{uid}/{token}',
+#     'ACTIVATION_URL': '#/activate/{uid}/{token}',
+#     'PERMISSIONS': {
+#         'token_create': ['rest_framework.permissions.AllowAny'],
+#     }
+# }
 
 EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
 

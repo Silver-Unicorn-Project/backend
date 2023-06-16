@@ -1,6 +1,8 @@
 from rest_framework import serializers
+from rest_framework.relations import SlugRelatedField
 
-from products.models import Category, Products, Favorite
+from products.models import Category, Products, ProductReview, Articles, Favorite
+
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
@@ -27,6 +29,37 @@ class ProductSerializer(serializers.ModelSerializer):
             'quantity',
         )
 
+        
+class ProductReviewSerializer(serializers.ModelSerializer):
+    product = serializers.SlugRelatedField(
+        slug_field='name',
+        queryset=Products.objects.all(),
+        required=False
+    )
+    author = SlugRelatedField(
+        default=serializers.CurrentUserDefault(),
+        read_only=True,
+        slug_field='username'
+    )
+
+    class Meta:
+        fields = ('id', 'product', 'text', 'author', 'score', 'created')
+        model = ProductReview
+
+    def validate_score(self, value):
+        if 0 > value > 5:
+            raise serializers.ValidationError('Выберите оценку от 1 до 5')
+        return value
+
+
+class ArticlesSerializer(serializers.ModelSerializer):
+    class Meta:
+        model = Articles
+        fields = (
+            'title',
+            'text',
+            'created_at',
+        )
 
 class FavoriteInfoSerializer(serializers.ModelSerializer):
 

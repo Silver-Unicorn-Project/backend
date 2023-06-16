@@ -6,7 +6,7 @@ from django.contrib.auth.validators import UnicodeUsernameValidator
 class User(AbstractUser):
     """Модель пользователя"""
     USERNAME_FIELD = 'email'
-    REQUIRED_FIELDS = ('username', 'first_name', 'last_name',)
+    REQUIRED_FIELDS = ('username', 'password')
 
     email = models.EmailField(
         'Электронная почта',
@@ -23,6 +23,11 @@ class User(AbstractUser):
         validators=[
             UnicodeUsernameValidator
         ]
+    )
+    password = models.CharField(
+        'Пароль',
+        max_length=100,
+        help_text='Введите пароль',
     )
     first_name = models.CharField(
         'Имя',

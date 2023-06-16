@@ -1,19 +1,25 @@
 from rest_framework.response import Response
 from rest_framework import viewsets
+from django.shortcuts import get_object_or_404
 
 from api.serializers import (
     CategoriesSerializer,
     CategoryDetailSerializer,
     ProductSerializer,
-    FavoriteSerializer
+    FavoriteSerializer,
+    ProductReviewSerializer,
+    ArticlesSerializer,
 )
+
+
 from products.models import Category, Products, Favorite
 from rest_framework.decorators import action, permission_classes
 from django.shortcuts import get_object_or_404
 from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_204_NO_CONTENT
 from rest_framework.permissions import IsAuthenticated, AllowAny
 from users.models import User
-
+from products.models import Category, Products, Articles, Favorite
+from api.permissions import IsAuthorOrReadOnly
 
 class CategoryViewSet(viewsets.ViewSet):
 
@@ -45,6 +51,26 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         queryset = Products.objects.select_related('category')
         return queryset
 
+
+class ProductReviewViewSet(viewsets.ModelViewSet):
+
+    serializer_class = ProductReviewSerializer
+    permission_classes = (IsAuthorOrReadOnly)
+
+    def get_queryset(self):
+        product = get_object_or_404(Products, id=self.kwargs.get('product_id'))
+        return product.productreviews.all()
+
+    def perform_create(self, serializer):
+        product_id = self.kwargs.get("product_id")
+        product = get_object_or_404(Products, pk=product_id)
+        serializer.save(author=self.request.user, product=product)
+
+
+class ArticlesViewSet(viewsets.ReadOnlyModelViewSet):
+
+    queryset = Articles.objects.all()
+    serializer_class = ArticlesSerializer
 
 class ProductsViewSet(viewsets.ModelViewSet):
 
