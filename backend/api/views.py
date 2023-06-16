@@ -1,6 +1,7 @@
 from rest_framework.response import Response
 from rest_framework import viewsets
 from django.shortcuts import get_object_or_404
+from django.db.models import Avg
 
 from api.serializers import (
     CategoriesSerializer,
@@ -28,6 +29,11 @@ class CategoryViewSet(viewsets.ViewSet):
     def get_queryset(self):
         queryset = Category.objects.select_related('category')
         return queryset
+
+
+class ProductsViewSet(viewsets.ModelViewSet):
+    queryset = Products.objects.annotate(Avg("productreviews__score")).all()
+    serializer_class = ProductSerializer
 
 
 class CategoryProductsViewSet(viewsets.ViewSet):
