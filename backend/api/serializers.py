@@ -44,12 +44,10 @@ class ProductReviewSerializer(serializers.ModelSerializer):
     class Meta:
         fields = ('id', 'product', 'text', 'author', 'score', 'created')
         model = ProductReview
-
     def validate_score(self, value):
         if 0 > value > 5:
             raise serializers.ValidationError('Выберите оценку от 1 до 5')
         return value
-
 
 
 class ArticlesSerializer(serializers.ModelSerializer):
