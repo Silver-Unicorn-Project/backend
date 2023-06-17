@@ -1,8 +1,8 @@
 from rest_framework import serializers
 from rest_framework.relations import SlugRelatedField
 
-from products.models import Category, Products, ProductReview, Articles, Favorite
-
+from products.models import (Articles, Category, Favorite, ProductReview,
+                             Products)
 
 
 class CategoriesSerializer(serializers.ModelSerializer):
@@ -61,6 +61,7 @@ class ArticlesSerializer(serializers.ModelSerializer):
             'created_at',
         )
 
+
 class FavoriteInfoSerializer(serializers.ModelSerializer):
 
     class Meta:
@@ -75,6 +76,7 @@ class FavoriteInfoSerializer(serializers.ModelSerializer):
 
 
 class FavoriteSerializer(serializers.ModelSerializer):
+    is_favorited = serializers.BooleanField(read_only=True)
 
     class Meta:
         model = Favorite

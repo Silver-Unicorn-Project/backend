@@ -1,10 +1,6 @@
-from django.urls import path, include
-from rest_framework.routers import DefaultRouter
+from django.urls import include, path
+
 from api import views
-
-router = DefaultRouter()
-router.register('products', views.ProductsViewSet, basename='products')
-
 
 urlpatterns = [
     path('', include('djoser.urls')),
@@ -12,5 +8,8 @@ urlpatterns = [
     path('categories/', views.CategoryViewSet.as_view({'get': 'list'})),
     path('categories/<str:slug>/', views.CategoryViewSet.as_view({'get': 'retrieve'})),
     path('<str:slug>/products/', views.CategoryProductsViewSet.as_view({'get': 'list'})),
-    path('', include(router.urls))
+    path('<str:slug>/products/<int:pk>/favorite/', 
+         views.CategoryProductsViewSet.as_view(
+             {'post': 'favorite', 'delete': 'favorite'}
+         )),
    ]

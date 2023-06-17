@@ -1,25 +1,16 @@
-from rest_framework.response import Response
+from django.shortcuts import get_object_or_404
 from rest_framework import viewsets
-from django.shortcuts import get_object_or_404
+from rest_framework.response import Response
+from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
+                                   HTTP_400_BAD_REQUEST)
 
-from api.serializers import (
-    CategoriesSerializer,
-    CategoryDetailSerializer,
-    ProductSerializer,
-    FavoriteSerializer,
-    ProductReviewSerializer,
-    ArticlesSerializer,
-)
-
-
-from products.models import Category, Products, Favorite
-from rest_framework.decorators import action, permission_classes
-from django.shortcuts import get_object_or_404
-from rest_framework.status import HTTP_400_BAD_REQUEST, HTTP_201_CREATED, HTTP_204_NO_CONTENT
-from rest_framework.permissions import IsAuthenticated, AllowAny
-from users.models import User
-from products.models import Category, Products, Articles, Favorite
 from api.permissions import IsAuthorOrReadOnly
+from api.serializers import (ArticlesSerializer, CategoriesSerializer,
+                             CategoryDetailSerializer, FavoriteSerializer,
+                             ProductReviewSerializer, ProductSerializer)
+from products.models import Articles, Category, Favorite, Products
+from users.models import User
+
 
 class CategoryViewSet(viewsets.ViewSet):
 
@@ -51,6 +42,30 @@ class CategoryProductsViewSet(viewsets.ViewSet):
         queryset = Products.objects.select_related('category')
         return queryset
 
+    def favorite(self, request, slug=None, pk=None):
+        user = User.objects.get(id=5)
+        product = get_object_or_404(Products, pk=pk)
+        obj = Favorite.objects.filter(user=user, products=product)
+        if self.request.method == 'POST':
+            if obj.exists():
+                content = {'error': 'Этот товар уже есть в списке избранного'}
+                return Response(content, status=HTTP_400_BAD_REQUEST)
+            serializer = FavoriteSerializer(
+                data={'user': user.pk, 'products': product.pk},
+                context={'request': self.request},
+            )
+            serializer.is_valid(raise_exception=True)
+            serializer.save()
+            return Response(serializer.data, status=HTTP_201_CREATED)
+
+        if self.request.method == 'DELETE':
+            if obj.exists():
+                obj.delete()
+                content = {'message': 'Товар удален из списка избранного'}
+                return Response(content, status=HTTP_204_NO_CONTENT)
+            content = {'error': 'Этого товара нет в избранном'}
+            return Response(content, status=HTTP_400_BAD_REQUEST)
+
 
 class ProductReviewViewSet(viewsets.ModelViewSet):
 
@@ -71,33 +86,3 @@ class ArticlesViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Articles.objects.all()
     serializer_class = ArticlesSerializer
-
-class ProductsViewSet(viewsets.ModelViewSet):
-
-    queryset = Products.objects.all()
-    serializer_class = ProductSerializer
-
-    @action(detail=True, methods=['POST', 'DELETE'])
-    def favorite(self, request, pk=None):
-        #user = self.request.user
-        user = User.objects.get(id=5)
-        product = get_object_or_404(Products, pk=pk)
-        obj = Favorite.objects.filter(user=user, products=product)
-        if self.request.method == 'POST':
-            if obj.exists():
-                return Response(status=HTTP_400_BAD_REQUEST)
-            serializer = FavoriteSerializer(
-                data={'user': user.pk, 'products': product.pk},
-                context={'request': self.request},
-            )
-            serializer.is_valid(raise_exception=True)
-            serializer.save()
-            return Response(serializer.data, status=HTTP_201_CREATED)
-
-        if self.request.method == 'DELETE':
-            if obj.exists():
-                obj.delete()
-                content = {'message': 'Продукт удален из списка избранного'}
-                return Response(content, status=HTTP_204_NO_CONTENT)
-            content = {'error': 'Этого продукта нет в избранном'}
-            return Response(content, status=HTTP_400_BAD_REQUEST)

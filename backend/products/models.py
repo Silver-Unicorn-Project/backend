@@ -1,10 +1,10 @@
+from django.core.validators import MaxValueValidator, MinValueValidator
 from django.db import models
 from django.db.models import F, Sum
-from users.models import User
-from django.core.validators import MaxValueValidator, MinValueValidator
 from django.urls import reverse
-
 from phonenumber_field.modelfields import PhoneNumberField
+
+from users.models import User
 
 
 class Products(models.Model):
@@ -193,7 +193,6 @@ class OrderItem(models.Model):
 
 
 class Favorite(models.Model):
-    title = models.CharField('Название', max_length=100)
     user = models.ForeignKey(
         User,
         on_delete=models.CASCADE,
@@ -203,7 +202,7 @@ class Favorite(models.Model):
     products = models.ForeignKey(
         Products,
         on_delete=models.CASCADE,
-        verbose_name='Продукты',
+        verbose_name='Товары',
         related_name='favorites'
     )
 
@@ -212,7 +211,7 @@ class Favorite(models.Model):
         verbose_name_plural = 'Списки избранного'
 
     def __str__(self):
-        return f'{self.name}'
+        return f'{self.user.username}'
 
 
 class FavoriteItem(models.Model):

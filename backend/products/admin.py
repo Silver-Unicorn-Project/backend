@@ -1,18 +1,9 @@
 from django.contrib import admin
 from django.utils.html import format_html
 
-from .models import (
-    Category,
-    Products,
-    ProductsPicture,
-    Status,
-    Order,
-    OrderItem,
-    Favorite,
-    FavoriteItem,
-    ProductReview,
-    Articles
-)
+from .models import (Articles, Category, Favorite, FavoriteItem, Order,
+                     OrderItem, ProductReview, Products, ProductsPicture,
+                     Status)
 
 
 class ProductsPictureAdmin(admin.StackedInline):
@@ -87,6 +78,13 @@ class FavoriteItemInline(admin.TabularInline):
 class FavoriteAdmin(admin.ModelAdmin):
     inlines = (
         FavoriteItemInline,
+    )
+    list_display = (
+        'user',
+        'products',
+    )
+    search_fields = (
+        'user',
     )
 
 
