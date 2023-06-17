@@ -3,6 +3,8 @@ from rest_framework import viewsets
 from rest_framework.response import Response
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
+from django.db.models import Avg
+
 
 from api.permissions import IsAuthorOrReadOnly
 from api.serializers import (ArticlesSerializer, CategoriesSerializer,
@@ -27,6 +29,11 @@ class CategoryViewSet(viewsets.ViewSet):
     def get_queryset(self):
         queryset = Category.objects.select_related('category')
         return queryset
+
+
+class ProductsViewSet(viewsets.ModelViewSet):
+    queryset = Products.objects.annotate(Avg("productreviews__score")).all()
+    serializer_class = ProductSerializer
 
 
 class CategoryProductsViewSet(viewsets.ViewSet):
