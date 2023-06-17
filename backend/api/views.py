@@ -32,6 +32,7 @@ class CategoryViewSet(viewsets.ViewSet):
 
 
 class ProductsViewSet(viewsets.ModelViewSet):
+
     queryset = Products.objects.annotate(Avg("productreviews__score")).all()
     serializer_class = ProductSerializer
 
