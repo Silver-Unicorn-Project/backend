@@ -114,21 +114,3 @@ class ArticlesViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Articles.objects.all()
     serializer_class = ArticlesSerializer
-
-
-# класс, который отображает все товары (для проверки пагинации)
-class CategoryProductsViewSet2(viewsets.ViewSet):
-
-
-    def list(self, request):
-        queryset = Products.objects.all()
-        paginator = StandartResultsSetPagination()
-        page_size = 1
-        paginator.page_size = page_size
-        result_page = paginator.paginate_queryset(queryset, request)
-        serializer = ProductSerializer(result_page, many=True)
-        return paginator.get_paginated_response(serializer.data)
-
-    def get_queryset(self):
-        queryset = Products.objects.all()
-        return queryset
