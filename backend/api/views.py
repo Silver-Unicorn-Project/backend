@@ -1,5 +1,5 @@
 from django.shortcuts import get_object_or_404
-from rest_framework import viewsets
+from rest_framework import viewsets, pagination
 from rest_framework.response import Response
 from rest_framework.status import (HTTP_201_CREATED, HTTP_204_NO_CONTENT,
                                    HTTP_400_BAD_REQUEST)
@@ -37,14 +37,34 @@ class ProductsViewSet(viewsets.ModelViewSet):
     serializer_class = ProductSerializer
 
 
+# класс для пагинации
+class StandartResultsSetPagination(pagination.PageNumberPagination):
+
+    def get_paginated_response(self, data):
+        return Response({
+            'links': {
+                'next': self.get_next_link(),
+                'previous': self.get_previous_link()
+            },
+            'current_page': int(self.request.query_params.get('page', 1)),
+            'total': self.page.paginator.count,
+            'per_page': self.page_size,
+            'total_pages': round(self.page.paginator.count/self.page_size, 1),
+            'data': data,
+        })
 class CategoryProductsViewSet(viewsets.ViewSet):
+
 
     def list(self, request, slug):
         category_products = self.get_queryset().\
-            filter(category__slug=slug).\
-            filter(is_published=True)
-        serializer = ProductSerializer(category_products, many=True)
-        return Response(serializer.data)
+                filter(category__slug=slug).\
+                filter(is_published=True)
+        paginator = StandartResultsSetPagination()
+        page_size = 1
+        paginator.page_size = page_size
+        result_page = paginator.paginate_queryset(category_products, request)
+        serializer = ProductSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
 
     def get_queryset(self):
         queryset = Products.objects.select_related('category')
@@ -94,3 +114,21 @@ class ArticlesViewSet(viewsets.ReadOnlyModelViewSet):
 
     queryset = Articles.objects.all()
     serializer_class = ArticlesSerializer
+
+
+# класс, который отображает все товары (для проверки пагинации)
+class CategoryProductsViewSet2(viewsets.ViewSet):
+
+
+    def list(self, request):
+        queryset = Products.objects.all()
+        paginator = StandartResultsSetPagination()
+        page_size = 1
+        paginator.page_size = page_size
+        result_page = paginator.paginate_queryset(queryset, request)
+        serializer = ProductSerializer(result_page, many=True)
+        return paginator.get_paginated_response(serializer.data)
+
+    def get_queryset(self):
+        queryset = Products.objects.all()
+        return queryset

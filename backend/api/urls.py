@@ -12,4 +12,6 @@ urlpatterns = [
          views.CategoryProductsViewSet.as_view(
              {'post': 'favorite', 'delete': 'favorite'}
          )),
+    # путь для проверки пагинации (со всеми товарами)
+    path('products/', views.CategoryProductsViewSet2.as_view({'get': 'list'})),
    ]
