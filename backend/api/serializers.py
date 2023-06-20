@@ -29,7 +29,7 @@ class ProductSerializer(serializers.ModelSerializer):
             'quantity',
         )
 
-        
+
 class ProductReviewSerializer(serializers.ModelSerializer):
     product = serializers.SlugRelatedField(
         slug_field='name',
