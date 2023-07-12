@@ -40,11 +40,13 @@ class Products(models.Model):
         related_name='category_products',
         on_delete=models.SET_NULL,
         null=True,
+        blank=True,
         verbose_name='Категории'
     )
     rating = models.IntegerField(
         verbose_name='Рейтинг',
-        null=True
+        null=True,
+        blank=True
     )
 
     class Meta:
