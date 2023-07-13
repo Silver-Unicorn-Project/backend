@@ -169,12 +169,10 @@ DJOSER = {
     }
 }
 
-EMAIL_BACKEND = 'django.core.mail.backends.filebased.EmailBackend'
-
-EMAIL_FILE_PATH = os.path.join(BASE_DIR, 'sent_emails')
-
-DEFAULT_FROM_EMAIL = 'admin@silver_unicorn.ru'
-
-INTERNAL_IPS = [
-    '127.0.0.1',
-]
+EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
+DEFAULT_FROM_EMAIL = env.str('EMAIL')
+EMAIL_HOST = 'smtp.mail.ru'
+EMAIL_PORT = 2525
+EMAIL_HOST_USER = env.str('EMAIL')
+EMAIL_HOST_PASSWORD = env.str('EMAIL_PASSWORD')
+EMAIL_USE_TLS = True
