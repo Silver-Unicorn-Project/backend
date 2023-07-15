@@ -1,0 +1,42 @@
+version: "3"
+
+services:
+  db:
+    restart: always
+    image: postgres:12.0-alpine
+    volumes:
+      - db_data:/var/lib/postgresql/data
+    container_name: db
+    env_file:
+      - ./.env
+    expose:
+      - 5432
+
+  django:
+    build: ./backend
+    command: bash -c "python /code/manage.py migrate --noinput &&
+             python /code/manage.py collectstatic --noinput &&
+             gunicorn silver_unicorn.wsgi:application --bind 0.0.0.0:8000"
+    volumes:
+      - static_volume:/code/staticfiles
+      - media_volume:/code/media
+    env_file:
+      - ./.env
+    expose:
+      - 8000
+    depends_on:
+      - db
+  nginx:
+    build: ./nginx
+    ports:
+      - 80:80/tcp
+    volumes:
+      - static_volume:/opt/static
+      - media_volume:/opt/media
+    depends_on:
+      - django
+
+volumes:
+  db_data:
+  static_volume:
+  media_volume:
