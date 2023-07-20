@@ -39,4 +39,4 @@ jobs:
           key: ${{ secrets.SSH_KEY }}
           script: |
             cd silver_unicorn
-            ./deploy.sh
+            sudo ./deploy.sh
