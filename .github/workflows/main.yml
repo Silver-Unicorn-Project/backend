@@ -37,8 +37,6 @@ jobs:
           host: ${{ secrets.HOST }}
           username: ${{ secrets.USER }}
           key: ${{ secrets.SSH_KEY }}
-          folder: ${{ secrets.FOLDER }}
-          deploy: ${{ secrets.DEPLOY_NAME }}
           script: |
             cd silver_unicorn
             ./deploy.sh
