@@ -40,5 +40,5 @@ jobs:
           folder: ${{ secrets.FOLDER }}
           deploy: ${{ secrets.DEPLOY_NAME }}
           script: |
-            cd ${{ secrets.FOLDER }}
-            ./${{ secrets.DEPLOY_NAME }}
+            cd silver_unicorn
+            ./deploy.sh
