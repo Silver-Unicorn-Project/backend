@@ -182,3 +182,11 @@ EMAIL_PORT = 2525
 EMAIL_HOST_USER = env.str('EMAIL')
 EMAIL_HOST_PASSWORD = env.str('EMAIL_PASSWORD')
 EMAIL_USE_TLS = True
+
+CORS_ORIGIN_ALLOW_ALL = True
+
+CSRF_TRUSTED_ORIGINS = [
+    "http://localhost",
+    "https://127.0.0.1",
+    "http:/89.208.196.153",
+]
