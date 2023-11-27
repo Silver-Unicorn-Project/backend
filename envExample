@@ -1,0 +1,9 @@
+DEBUG=True
+ALLOWED_HOSTS=localhost,127.0.0.1
+SECRET_KEY='your_custom_string' # любая строка из цифр, латиских букв и символов
+POSTGRES_DB=unicorn # имя создаваемой БД
+POSTGRES_USER=postgres # пароль для БД
+POSTGRES_PASSWORD=postgres # пользователь для БД
+HOST=db:5432 # host и порт для подключения к БД, оставить если используется поставляемый с приложением postgresql сервер
+EMAIL=custom-email@domain.ru # email с которого сервис будет отправлять уведомления
+EMAIL_PASSWORD=password # пароль к email
