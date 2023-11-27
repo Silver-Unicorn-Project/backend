@@ -26,7 +26,6 @@ urlpatterns = [
     path('card/<int:card_id>/', show_card, name='card'),
     path('buy_page/', buy_product, name='buy_page'),
     path('api/', include('api.urls')),
-    path('auth/', include('djoser.urls.authtoken')),
     re_path(r'^redoc/$', schema_view.with_ui('redoc', cache_timeout=0),
        name='schema-redoc'),
 ] + static(settings.MEDIA_URL, document_root=settings.MEDIA_ROOT)
