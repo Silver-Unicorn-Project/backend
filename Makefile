@@ -11,7 +11,8 @@ drop-docker-app:
 
 .PHONY: local-app
 local-app:
-	pip install -r requirements.txt --noinput &&
-	python ./backend/manage.py migrate --noinput &&
-	python ./backend/manage.py collectstatic --noinput &&
+	pip install -r requirements.txt
+	python ./backend/manage.py migrate --noinput
+	python ./backend/manage.py collectstatic --noinput
 	python ./backend/manage.py runserver 0.0.0.0:8000
+
