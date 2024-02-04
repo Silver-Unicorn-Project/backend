@@ -13,9 +13,12 @@ services:
       - 5432
 
   django:
-    build: ./backend
-    command: bash -c "python /code/manage.py migrate --noinput &&
-             python /code/manage.py collectstatic --noinput &&
+    build: 
+      context: ./
+      dockerfile: ./backend/Dockerfile
+    command: bash -c "python /code/backend/manage.py migrate --noinput &&
+             python /code/backend/manage.py collectstatic --noinput &&
+             cd /code/backend &&
              gunicorn silver_unicorn.wsgi:application --bind 0.0.0.0:8000"
     volumes:
       - static_volume:/code/staticfiles
