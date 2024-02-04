@@ -50,8 +50,8 @@ INSTALLED_APPS = [
     'corsheaders',
     'rest_framework.authtoken',
     'djoser',
-    'drf_yasg',
-    'debug_toolbar'
+    'debug_toolbar',
+    'drf_spectacular'
 ]
 
 MIDDLEWARE = [
@@ -158,6 +158,7 @@ REST_FRAMEWORK = {
     'DEFAULT_AUTHENTICATION_CLASSES': [
         'rest_framework.authentication.TokenAuthentication'
     ],
+    'DEFAULT_SCHEMA_CLASS': 'drf_spectacular.openapi.AutoSchema',
     # 'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     # 'PAGE_SIZE': 5,
 }
@@ -173,6 +174,14 @@ DJOSER = {
     'PERMISSIONS': {
         'token_create': ['rest_framework.permissions.AllowAny'],
     }
+}
+
+SPECTACULAR_SETTINGS = {
+ 'TITLE': 'Silver Unicorn API',
+ 'DESCRIPTION': 'Документация для конного магазина Silver Unicorn',
+ 'VERSION': 'v1',
+ 'SERVE_INCLUDE_SCHEMA': False,
+ # OTHER SETTINGS
 }
 
 EMAIL_BACKEND = 'django.core.mail.backends.smtp.EmailBackend'
